@@ -1,0 +1,2 @@
+rootProject.name='ComponentTestExample'
+include ':app'

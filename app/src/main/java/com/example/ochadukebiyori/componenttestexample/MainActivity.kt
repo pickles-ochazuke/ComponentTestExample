@@ -1,5 +1,6 @@
 package com.example.ochadukebiyori.componenttestexample
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -11,9 +12,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val button = findViewById<Button>(R.id.changeGreeting)
-        button.setOnClickListener {
+        val changeGreetingButton = findViewById<Button>(R.id.changeGreeting)
+        changeGreetingButton.setOnClickListener {
             findViewById<TextView>(R.id.helloWorld).text = "Hi World!"
+        }
+
+        val startOtherActivityButton = findViewById<Button>(R.id.startOtherActivity)
+        startOtherActivityButton.setOnClickListener {
+            val intent = Intent(this, OtherActivity::class.java).apply {
+                this.putExtra("Source", "MainActivity")
+            }
+            startActivity(intent)
         }
     }
 }

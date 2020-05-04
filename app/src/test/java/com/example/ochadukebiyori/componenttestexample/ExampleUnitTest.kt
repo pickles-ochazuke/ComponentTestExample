@@ -4,12 +4,17 @@ package com.example.ochadukebiyori.componenttestexample
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.intent.Intents.intended
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra
+import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 
 // JUnit
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import org.hamcrest.Matchers.allOf
 
 import org.junit.Test
 import org.junit.Assert.*
@@ -23,9 +28,8 @@ import org.junit.runner.RunWith
  */
 @RunWith(AndroidJUnit4::class)
 class ExampleUnitTest {
-
     @get:Rule
-    val mainScenarioRule = activityScenarioRule<MainActivity>()
+    val mainIntentsRule = IntentsTestRule(MainActivity::class.java)
 
     @Test
     fun 起動したらHelloWorldが表示されるべき() {
@@ -37,5 +41,15 @@ class ExampleUnitTest {
         onView(withId(R.id.changeGreeting)).perform(click())
 
         onView(withId(R.id.helloWorld)).check(matches(withText("Hi World!")))
+    }
+
+    @Test
+    fun ボタンを押すとOtherActivityが起動するべき() {
+        onView(withId(R.id.startOtherActivity)).perform(click())
+
+        intended(allOf(
+            hasComponent(OtherActivity::class.java.name),
+            hasExtra("Source", "MainActivity")
+        ))
     }
 }
